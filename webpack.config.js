@@ -3,9 +3,10 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+    mode: 'development',
     entry: {
-        print: './src/print.js',
         app: './src/index.js',
+        react: 'react-hot-loader/patch',
     },
     output: {
         filename: '[name].bundle.js',
@@ -13,24 +14,33 @@ module.exports = {
     },
     module: {
         rules: [
+            // css
             {
                 test: /\.css$/,
-                use: ['style-loader', {loader: 'css-loader', options: {modules: true}}]
+                use: [
+                    'style-loader',
+                    {loader: 'css-loader', options: {modules: true}}
+                ]
             },
+            // scss
             {
                 test: /\.s[ac]ss$/i,
                 use: [
-                    // Creates `style` nodes from JS strings
                     'style-loader',
-                    // Translates CSS into CommonJS
                     {loader: 'css-loader', options: {modules: true}},
-                    // Compiles Sass to CSS
                     'sass-loader',
                 ]
             },
+            // images
             {
                 test: /\.(png|svg|jpg|gif)$/,
                 use: ['file-loader']
+            },
+            // babel
+            {
+                test: /\.(js|jsx)$/,
+                use: 'babel-loader',
+                exclude: /node_modules/
             }
 
         ]
@@ -41,5 +51,15 @@ module.exports = {
             title: "Output Management",
             template: "./src/index.html",
         })
-    ]
+    ],
+    resolve: {
+        extensions: ['.js', '.jsx'],
+        alias: {
+            'react-dom': '@hot-loader/react-dom'
+        }
+    },
+    devtool: 'inline-source-map',
+    devServer: {
+        contentBase: './dist',
+    }
 };
