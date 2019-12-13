@@ -1,0 +1,14 @@
+@import "variables";
+
+.hello {
+  color: $text-color;
+  font-size: 20px;
+}
+
+h1, h2 {
+  border: 1px solid black;
+}
+
+img {
+  width: 100px;
+}
